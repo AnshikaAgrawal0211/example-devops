@@ -14,7 +14,7 @@ object devopsApp extends App {
   implicit val executionContext: ExecutionContextExecutor = system.dispatcher
   implicit val materialize: ActorMaterializer = ActorMaterializer()
   private val routes = (new Controller).routes
-  private val listOfNames = List("anshika","abhishek","amit","ravi")
+  private val listOfNames = List("anshika","sachin","amit","ravi")
   private val serverBinding =  Http().bindAndHandle(
       routes, "localhost", 8000)
   serverBinding.onComplete {
