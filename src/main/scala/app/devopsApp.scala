@@ -2,6 +2,7 @@ package app
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.HttpRequest
 import akka.stream.ActorMaterializer
 import controller.Controller
 
@@ -13,12 +14,20 @@ object devopsApp extends App {
   implicit val executionContext: ExecutionContextExecutor = system.dispatcher
   implicit val materialize: ActorMaterializer = ActorMaterializer()
   private val routes = (new Controller).routes
+  private val listOfNames = List("anshika","abhishek","amit","ravi")
   private val serverBinding =  Http().bindAndHandle(
-      routes, "localhost", 9000)
+      routes, "localhost", 8000)
   serverBinding.onComplete {
     case Success(bound) =>
       println(
         s"Server online at http://${ bound.localAddress.getHostName }:${ bound.localAddress.getPort }/")
+      listOfNames.foreach{ name =>
+        val url = s"http://${ bound.localAddress.getHostName }:${ bound.localAddress.getPort }/welcome/${name}"
+        Http().singleRequest(HttpRequest(uri = url))
+      }
+      Http()(system)
+        .shutdownAllConnectionPools()
+      system.terminate()
     case Failure(error) =>
       Http()(system)
         .shutdownAllConnectionPools()
