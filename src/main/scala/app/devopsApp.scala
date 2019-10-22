@@ -24,6 +24,7 @@ object devopsApp extends App {
       listOfNames.foreach{ name =>
         val url = s"http://${ bound.localAddress.getHostName }:${ bound.localAddress.getPort }/welcome/${name}"
         Http().singleRequest(HttpRequest(uri = url))
+        Thread.sleep(10000)
       }
       Http()(system)
         .shutdownAllConnectionPools()
