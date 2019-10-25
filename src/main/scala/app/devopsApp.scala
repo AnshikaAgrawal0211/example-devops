@@ -16,7 +16,7 @@ object devopsApp extends App {
   private val routes = (new Controller).routes
 //  private val listOfNames = List("anshika","sachin","amit","ravi")
   private val serverBinding =  Http().bindAndHandle(
-      routes, "localhost", 2004)
+      routes, "0.0.0.0", 2004)
   serverBinding.onComplete {
     case Success(bound) =>
       println(
